@@ -18,12 +18,13 @@
 #' @family reading and writing data
 #' 
 #' @export
-spark_read_csv <- function(sc, name, path, repartition = 0, memory = TRUE, overwrite = TRUE) {
+spark_read_csv <- function(sc, name, path, repartition = 0, memory = TRUE, overwrite = TRUE,
+                           header = TRUE, delimiter = ",") {
   
   if (overwrite) spark_remove_table_if_exists(sc, name)
   
   api <- spark_api(sc)
-  df <- spark_api_read_csv(api, path.expand(path))
+  df <- spark_api_read_csv(api, path.expand(path), header = header, delimiter = delimiter)
   spark_partition_register_df(sc, df, api, name, repartition, memory)
 }
 
